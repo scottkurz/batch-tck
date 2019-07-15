@@ -78,7 +78,7 @@
     <repositories>
         <repository>
             <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/jakartabatch-1006/</url>
+            <url>https://oss.sonatype.org/content/repositories/jakartabatch-1007/</url>
         </repository>
     </repositories>
 
