@@ -110,30 +110,46 @@ The basic test flow simply involves a TestNG test method using the JobOperator A
 ===	TCK Properties
 In order to run the TCK, you must define a property pointing to the Jakarta Batch runtime implementation that you are running the TCK against.
 
-You will need to set one required property prior to running the Jakarta Batch TCK. This property is defined in the batch-tck.properties as follows:
+==== Required Properties
+You will need to set one required property, *batch.impl.classes* prior to running the Jakarta Batch TCK. This property is defined in the `batch-tck.properties` as follows:
 
-Property = Required/Example Value	Description
-batch.impl.classes=$HOME/foo/lib/ classes:$HOME/foo/lib/foo.jar:
-$HOME/foo/lib/batch-api.jar	Path listing of the Jakarta Batch runtime implementation (that you are running the TCK against)
+Example:
 
-An optional property with name jvm.options is provided to specify JVM arguments using the TestNG <jvmarg line=""/> function:	This property should list the JVM arguments, separated by spaces.
+    # Edit this property to contain a classpath listing of the directories and jars for the SE Jakarta Batch runtime implementation (that you're running the TCK against)
+    # For example: 
+   
+    batch.impl.classes=$HOME/foo/lib/classes:$HOME/foo/lib/foo.jar:$HOME/foo/lib/batch-api.jar
 
-Finally, some of the TCK tests sleep for a short period of time to allow an operation to complete or to force a timeout. These time values are defaulted via properties that are also specified in jsr352-tck.properties. These values can be adjusted if timing issues are seen in the implementation being tested. Refer to the documentation for a specific test (i.e. the comments in the test source) as to how the time value is used for that test.
+==== Optional JVM Argument Property
 
-5.2	Porting Package SPI
-The Batch Applications for the Java Platform (Jakarta Batch) TCK relies on an implementation of a “porting package” SPI to function, in order to verify test execution results. The reason is that the JSR 352 specification API alone does not provide a convenient-enough mechanism to check results.
+An optional property with name *jvm.options* is provided to specify JVM arguments using the `TestNG <jvmarg line=""/>`` function:	This property value should list the JVM arguments, separated by spaces.
+
+==== Optional Properties for Tuning Wait Times
+
+Finally, some of the TCK tests sleep for a short period of time to allow an operation to complete or to force a timeout.  These wait times are defaulted via properties that are also specified in batch-tck.properties.  
+
+As with many typical decisions regarding timeout values, we attempt to strike a good balance between failing quickly when appropriate but allowing legitimate work to complete.
+
+These values can be adjusted if timing issues are seen in the implementation being tested. Refer to the documentation for a specific test (i.e. the comments in the test source) as to how the time value is used for that test.
+
+===	Porting Package SPI
+
+The Jakarta Batch TCK relies on an implementation of a “porting package” SPI to function, in order to verify test execution results. The reason is that the Jakarta Batch specification API alone does not provide a convenient-enough mechanism to check results.
  
-A default, “polling” implementation of this SPI is shipped within the TCK itself. The expectation is that the typical JSR 352 implementation will be content to use the TCK- provided, default implementation of the porting package SPI.
+A default, “polling” implementation of this SPI is shipped within the TCK itself. The expectation is that the typical Jakarta Batch implementation will be content to use the TCK-provided, default implementation of the porting package SPI.
 
 Further detail on the porting package is provided later in this document, in case you wish to provide your own, different implementation.
 
 
-5.3	Configuring TestNG to run the TCK
-TestNG is responsible for selecting the tests to execute, the order of execution, and reporting the results. Detailed TestNG documentation can be found at testng.org [http://testng.org/doc/documentation-main.html].
+=== Configuring TestNG to run the TCK
 
-The artifacts/jsr352-tck-impl-suite.xml artifact provided in the TCK distribution must be run by TestNG 6.9 (described by the TestNG documentation as "with a testng.xml file") unmodified for an implementation to pass the TCK. This file also allows tests to be excluded from a run (for, say, debugging purposes).
+TestNG is responsible for selecting the tests to execute, the order of execution, and reporting the results. Detailed TestNG documentation can be found at testng.org [http://testng.org/doc/documentation-main.html].   One reason TestNG was chosen was the ability to use a single XML file to hold excludes from a set of compiled tests, and to easily add to this exclude list in the event of TCK challenges.
 
-6.	Executing Signature Tests
+The `artifacts/batch-tck-impl-SE-suite.xml` artifact provided in the TCK distribution must be run by TestNG 6.8.8 (described by the TestNG documentation as "with a testng.xml file")  [underline]#unmodified# for an implementation to pass the TCK. 
+
+(*Note:* for debugging purposes, however, it may be convenient to use this file to allow tests to be excluded from a run, e.g. to run a single test method.).
+
+==	Executing Signature Tests
 
 One of the requirements of an implementation passing the TCK is for it to pass the signature test. This section describes how to run the signature test against your implementation.
 
