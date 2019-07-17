@@ -153,42 +153,55 @@ The `artifacts/batch-tck-impl-SE-suite.xml` artifact provided in the TCK distrib
 
 One of the requirements of an implementation passing the TCK is for it to pass the signature test. This section describes how to run the signature test against your implementation.
 
-6.1	Obtaining the Signature Test Tool (and prerequisites)
-You can obtain the Sigtest tool from the Sigtest home page at http://sigtest.java.net
+=== Obtaining a signature test tool 
 
-The other prereq needed for the signature test is an implementation of class javax.enterprise.util.Nonbinding. This is, (at the time of this writing anyway), available for download as part of the CDI API, via Maven and other download mechanisms, among other possible options.
+We do not prescribe a certain version/distribution of signature test library. 
 
-(We don't count the javax.inject.* package as a “prereq” here because, although it's a dependency, it is packaged along with our TCK).
+Some suggestions:
 
-6.2	JDK/JRE prerequisite
+. The https://github.com/eclipse-ee4j/jakartaee-tck/blob/master/lib/sigtestdev.jar[sigtestdev.jar] version used by the Jakarta EE TCK project.
+. A distribution from the https://wiki.openjdk.java.net/display/CodeTools/sigtest[sigtest project], an OpenJDK project. 
+. The unofficial version of sigtest released to Maven Central under coordinates *net.java.sigtest:sigtestdev:3.0-b12-v20140219* (the JAR is https://repo1.maven.org/maven2/net/java/sigtest/sigtestdev/3.0-b12-v20140219/sigtestdev-3.0-b12-v20140219.jar[here]).
 
-The signature test files to compare your implementation against were created with Oracle JDKs. The tests will not pass when run with the levels of IBM JDK/JRE available at the time of this writing. An Oracle JDK/JRE should probably be used, then, when running the signature tests.
+It is assumed all these options will give similar results.
 
-To summarize: for each of Java 6 and Java 7, both the 'java' executable and the 'lib/rt.jar' referenced in the sample “running the signature tests” commands below should be part of a single Oracle JDK/JRE (a different one for each of Java 6 and Java 7, of course).
- 
-6.3	Running the Signature Tests
-The TCK package contains the files jsr352-api-sigtest-java7.sig and jsr352- api-sigtest-java6.sig (in the artifacts directory).
+===	JDK/JRE prerequisite
+
+The official run of the signature tests must be performed with an Open JDK with HotSpot VM, using a distribution matching the Java version being tested (e.g. Java 8). 
+
+Note also that informal runs against certain JDK/JRE distributions may fail, simply because the layout of the JVM internals differs from what the sigtest tooling expects, (and not because of a signature mismatch or other Java language issue).
+
+=== Other included prereqs
+
+The other prereqs needed for the signature tests are included by the TCK distribution:
+
+* an implementation of class javax.enterprise.util.Nonbinding - provided by the CDI API JAR.
+* the `javax.inject.*`` classes 
+
+=== Running the Signature Tests
+
+The TCK package contains the files batch-api-sigtest-java7.sig and batch- api-sigtest-java6.sig (in the artifacts directory).
 
 Run the signature test by executing a command like the following:
 
 java -jar $SIGTEST_DEV_JAR SignatureTest -static -package javax.batch
--filename jsr352-api-sigtest-java7.sig -classpath
+-filename batch-api-sigtest-java8.sig -classpath
 $JAVA_HOME/lib/rt.jar:$JAVAX_INJECT_JAR:$JAVAX_ENTERPRISE_UTIL_JAR:
 $MY_BATCH_API_JAR
 
 
 Note the four dependencies here (not counting the JDK/JRE itself), the locations of which you may need to modify:
 
-•	SIGTEST_DEV_JAR:	the location of 'sigtestdev.jar' from your Sigtest download.
+•	SIGTEST_DEV_JAR:	the location of 'sigtestdev.jar' from your sigtest download.
 •	JAVAX_INJECT_JAR:	(for class javax.inject.Qualifier, shipped with TCK)
-•	JAVAX_ENTERPRISE_UTIL_JAR: (for class javax.enterprise.util.Nonbinding, not shipped with TCK)
+•	JAVAX_ENTERPRISE_UTIL_JAR: (for class javax.enterprise.util.Nonbinding,  shipped with TCK)
 •	MY_BATCH_API_JAR: Your own API JAR from your own implementation, which you are running the signature test against.
 
 Here is an example showing a sample set of values for the shell variables used in the shorthand above, when running the signature test against the JSR 352 Reference Implementation.
 
 It assumes:
 1)	You have unzipped both RI and TCK into the same top-level directory.
-2)	You are executing from working directory .../jsr352-tck-1.0
+2)	You are executing from working directory .../batch-tck-1.0
 3)	You have already copied sigtestdev.jar into this directory
 4)	You have already copied cdi-api-1.0.jar into this directory (this JAR contains the
 javax.enterprise.util.Nonbinding class)
@@ -196,7 +209,7 @@ javax.enterprise.util.Nonbinding class)
 
 
 java -jar sigtestdev.jar SignatureTest -static -package javax.batch
--filename artifacts/jsr352-api-sigtest-java7.sig -classpath
+-filename artifacts/batch-api-sigtest-java7.sig -classpath
 $JAVA_HOME/lib/rt.jar:lib/javax.inject.jar:../jsr352-ri- 1.0/javax.batch.api.jar:cdi-api-1.0.jar
 
 Again, be sure to choose the correct version of the signature file depending on your the Java version (6 or 7) of your JDK/JRE.
@@ -249,12 +262,12 @@ Though the requirement for passing the TCK is to run the signature test against 
 The “.sig” files were created using a command like the following:
 
 
-java -jar sigtestdev.jar Setup -static -package javax.batch -filename jsr352-api-sigtest-java7.sig -classpath
+java -jar sigtestdev.jar Setup -static -package javax.batch -filename batch-api-sigtest-java7.sig -classpath
 $JAVA_HOME/lib/rt.jar:lib/javax.inject.jar:../jsr352-ri- 1.0/javax.batch.api.jar:cdi-api-1.0.jar
 
 This example assumes you are executing from the jsr352-tck-1.0 directory, similar to the “run” command example in Section 5.3. Modify the path as needed in a similar manner.
 
-Also note that the Java version of the 'java' executable in the above command determines what Java version the signature file will correspond to. In this example, we use a filename of jsr352-api-sigtest-java7.sig' to show that this a Java 7 executable (assumed for this example).
+Also note that the Java version of the 'java' executable in the above command determines what Java version the signature file will correspond to. In this example, we use a filename of batch-api-sigtest-java7.sig' to show that this a Java 7 executable (assumed for this example).
 
 
 7.	Executing TestNG Test Suite
