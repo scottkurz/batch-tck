@@ -197,14 +197,15 @@ Note the four dependencies here (not counting the JDK/JRE itself), the locations
 •	JAVAX_ENTERPRISE_UTIL_JAR: (for class javax.enterprise.util.Nonbinding,  shipped with TCK)
 •	MY_BATCH_API_JAR: Your own API JAR from your own implementation, which you are running the signature test against.
 
-Here is an example showing a sample set of values for the shell variables used in the shorthand above, when running the signature test against the JSR 352 Reference Implementation.
+Here is an example showing a sample set of values for the shell variables used in the shorthand above, when running the signature test against 'jbatch', the former JSR 352 Reference Implementation.
 
 It assumes:
-1)	You have unzipped both RI and TCK into the same top-level directory.
-2)	You are executing from working directory .../batch-tck-1.0
-3)	You have already copied sigtestdev.jar into this directory
-4)	You have already copied cdi-api-1.0.jar into this directory (this JAR contains the
-javax.enterprise.util.Nonbinding class)
+
+. You have unzipped both RI and TCK into the same top-level directory.
+. You are executing from working directory ``.../batch-tck-1.0`
+. You have already copied `sigtestdev.jar` into this directory
+4)	You have already copied `cdi-api.jar` into this directory (this JAR contains the
+*javax.enterprise.util.Nonbinding* class)
 5)	Your 'java' executable and your 'rt.jar' come from a Java 7 JDK/JRE, since in the example you are running against the Java 7 signature file (based on the -filename argument)
 
 
