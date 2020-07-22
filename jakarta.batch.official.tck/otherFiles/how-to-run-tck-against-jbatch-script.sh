@@ -24,7 +24,12 @@ set -x
 TCK_HOME_DIR=~/jkbatch/
 
 # 2. Point to JAVA_HOME so that the signature test command below can find the runtime JAR (rt.jar):
+
+# Java 11
 export JAVA_HOME=/usr/lib/jvm/adoptopenjdk-11-openj9-amd64/
+
+# Java 8
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.212.b04-0.el7_6.x86_64/
 
 
 #------------------------------------------------------------------------------------------------------
@@ -56,6 +61,7 @@ ls -l $(which java) $(which javac)
 ls -l /etc/alternatives/java*    # Help navigate links
 echo $JAVA_HOME
 ls -l $JAVA_HOME/lib/rt.jar
+ls -l $JAVA_HOME/jre/lib/rt.jar
 java -version
 
 #############################################
@@ -68,6 +74,7 @@ java -version
 # STAGED
 #
 TCK_DOWNLOAD_URL=https://download.eclipse.org/jakartabatch/tck/eftl/jakarta.batch.official.tck-2.0.0-M4.zip
+TCK_DOWNLOAD_URL=https://oss.sonatype.org/content/repositories/jakartabatch-1028/jakarta/batch/jakarta.batch.official.tck/2.0.0-M4/jakarta.batch.official.tck-2.0.0-M4.zip
 
 #
 # OFFICIAL (will look like this)
@@ -114,6 +121,7 @@ cd jakarta.batch.official.tck-2.0.0-M4
 # com.ibm.jbatch implementation
 #------------------------------------------------
 
+# LEFT OFF - not in M2 yet
 ant -f build.xml -Dbatch.impl.classes=../jakarta.batch-api-2.0.0-M5.jar:../com.ibm.jbatch.container-2.0.0-M5.jar:../com.ibm.jbatch.spi-2.0.0-M5.jar:../derby-10.10.1.1.jar  -Djvm.options="-Dcom.ibm.jbatch.spi.ServiceRegistry.BATCH_THREADPOOL_SERVICE=com.ibm.jbatch.container.services.impl.GrowableThreadPoolServiceImpl -Dcom.ibm.jbatch.spi.ServiceRegistry.J2SE_MODE=true -Dcom.ibm.jbatch.spi.ServiceRegistry.CONTAINER_ARTIFACT_FACTORY_SERVICE=com.ibm.jbatch.container.services.impl.DelegatingBatchArtifactFactoryImpl"
 
 
