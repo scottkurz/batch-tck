@@ -188,13 +188,13 @@ echo Exclude CDI API JAR
 echo expecting failure to show tests are working
 echo -------------------------------------------
 echo
-IMPL_PATH=$BATCH_API_JAR\
+IMPL_PATH_INCOMPLETE=$BATCH_API_JAR\
 :$TCK_HOME_DIR/tckdir/prereqs/$TCK_ARTIFACT_ID/lib/jakarta.inject-api-2.0.0-RC4.jar\
 :$TCK_HOME_DIR/tckdir/prereqs/com.ibm.jbatch.container-2.0.0-M6.jar\
 :$TCK_HOME_DIR/tckdir/prereqs/com.ibm.jbatch.spi-2.0.0-M6.jar
 
 # Same command as before, different path
-$JAVA_HOME/bin/java -jar $TCK_HOME_DIR/tckdir/prereqs/sigtestdev-3.0-b12-v20140219.jar   SignatureTest -static -package jakarta.batch -filename  $TCK_HOME_DIR/tckdir/prereqs/$TCK_ARTIFACT_ID/artifacts/batch.standalone.tck.sig_2.0_se8   -classpath $JAVA_HOME/jre/lib/rt.jar:$IMPL_PATH
+$JAVA_HOME/bin/java -jar $TCK_HOME_DIR/tckdir/prereqs/sigtestdev-3.0-b12-v20140219.jar   SignatureTest -static -package jakarta.batch -filename  $TCK_HOME_DIR/tckdir/prereqs/$TCK_ARTIFACT_ID/artifacts/batch.standalone.tck.sig_2.0_se8   -classpath $JAVA_HOME/jre/lib/rt.jar:$IMPL_PATH_INCOMPLETE
 echo
 echo ---------------------
 echo done expected failure
@@ -262,6 +262,7 @@ rm -rf $JDK11_CLASSES; mkdir $JDK11_CLASSES; cd $JDK11_CLASSES
 # Extract here using `jimage extract`
 $JAVA_HOME/bin/jimage extract $JAVA_HOME/lib/modules
 
+
 echo
 echo --------------------------------
 echo Begin SigTest tests using Java 11
@@ -280,7 +281,7 @@ echo
 
 #------------------------------------------
 # Run SigTest forcing error (not strictly
-# necessary, but the signature testing is
+# necessary, though the signature testing is
 #------------------------------------------
 echo
 echo -------------------------------------------
@@ -288,18 +289,12 @@ echo Exclude CDI API JAR
 echo expecting failure to show tests are working
 echo -------------------------------------------
 echo
-IMPL_PATH=$BATCH_API_JAR\
-:$TCK_HOME_DIR/tckdir/prereqs/$TCK_ARTIFACT_ID/lib/jakarta.inject-api-2.0.0-RC4.jar\
-:$TCK_HOME_DIR/tckdir/prereqs/com.ibm.jbatch.container-2.0.0-M6.jar\
-:$TCK_HOME_DIR/tckdir/prereqs/com.ibm.jbatch.spi-2.0.0-M6.jar
 
 # Same command as before, different path
-$JAVA_HOME/bin/java -jar $TCK_HOME_DIR/tckdir/prereqs/sigtestdev-3.0-b12-v20140219.jar   SignatureTest -static -package jakarta.batch -filename  $TCK_HOME_DIR/tckdir/prereqs/$TCK_ARTIFACT_ID/artifacts/batch.standalone.tck.sig_2.0_se11  -classpath $JDK11_CLASSES/java.base:$IMPL_PATH
+$JAVA_HOME/bin/java -jar $TCK_HOME_DIR/tckdir/prereqs/sigtestdev-3.0-b12-v20140219.jar   SignatureTest -static -package jakarta.batch -filename  $TCK_HOME_DIR/tckdir/prereqs/$TCK_ARTIFACT_ID/artifacts/batch.standalone.tck.sig_2.0_se11  -classpath $JDK11_CLASSES/java.base:$IMPL_PATH_INCOMPLETE
 echo
 echo ---------------------
 echo done expected failure
 echo ---------------------
 echo
-
-# ------------------------------------------------------------------------------
 
