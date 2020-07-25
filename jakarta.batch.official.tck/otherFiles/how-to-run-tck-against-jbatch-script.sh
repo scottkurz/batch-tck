@@ -44,6 +44,16 @@ REQUIRED_JARS="\
  /home/ibmadmin/.m2/repository/jakarta/batch/jakarta.batch-api/2.0.0-M6/jakarta.batch-api-2.0.0-M6.jar \
 "
 
+rm $REQUIRED_JARS
+for f in "$REQUIRED_JARS"; do ls -l $f ; done
+
+# Make sure we don't have a stale local copy
+mvn org.apache.maven.plugins:maven-dependency-plugin:3.1.2:get -Dartifact=org.apache.derby:derby:10.10.1.1 -DrepoUrl=https://repo1.maven.org/maven2/ 
+mvn org.apache.maven.plugins:maven-dependency-plugin:3.1.2:get -Dartifact=jakarta.batch:jakarta.batch-api:2.0.0-M6 -DrepoUrl=https://repo1.maven.org/maven2/ 
+mvn org.apache.maven.plugins:maven-dependency-plugin:3.1.2:get -Dartifact=net.java.sigtest:sigtestdev:3.0-b12-v20140219 -DrepoUrl=https://repo1.maven.org/maven2/ 
+mvn org.apache.maven.plugins:maven-dependency-plugin:3.1.2:get -Dartifact=com.ibm.jbatch:com.ibm.jbatch.container:2.0.0-M6 -DrepoUrl=https://repo1.maven.org/maven2/ 
+
+
 #--------------------------------------------------
 # Show some basic info about the OS, JDK/JRE, etc.
 # This could be tweaked without ruining the
